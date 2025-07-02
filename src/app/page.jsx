@@ -38,7 +38,7 @@ export default function Main() {
         {/* Illustration */}
         <div className="relative">
           <img
-            src="https://source.unsplash.com/600x400/?startup,technology"
+            src="https://images.pexels.com/photos/7876046/pexels-photo-7876046.jpeg?_gl=1*1az5m0q*_ga*NDQ1NzgzMjA5LjE3NTE0NTEyMDk.*_ga_8JE65Q40S6*czE3NTE0NTEyMDkkbzEkZzEkdDE3NTE0NTEyNDMkajI2JGwwJGgw"
             alt="Hero Illustration"
             className="rounded-lg shadow-lg transform hover:scale-105 transition duration-500"
           />
