@@ -2,16 +2,24 @@
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 import Head from "next/head";
-import { motion } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
 
 export default function Services() {
+  const [isVisible, setIsVisible] = useState(false);
+  const [visibleServices, setVisibleServices] = useState([]);
+  const [hoveredService, setHoveredService] = useState(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const heroRef = useRef(null);
+
   const services = [
     {
       title: "Web Development",
       description: "Custom websites and applications tailored to your business goals.",
+      features: ["Responsive Design", "Performance Optimization", "SEO Integration"],
+      color: "from-blue-500 to-purple-600",
       icon: (
         <svg
-          className="h-10 w-10 text-indigo-600 mb-4"
+          className="h-10 w-10 text-indigo-600 mb-4 transition-transform duration-300 group-hover:scale-110"
           fill="none"
           stroke="currentColor"
           strokeWidth={2}
@@ -20,7 +28,7 @@ export default function Services() {
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
-            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v16a1 1 0 01-1 1H4a1 1 0 01-1-1V4z"
+            d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
           />
         </svg>
       ),
@@ -28,9 +36,11 @@ export default function Services() {
     {
       title: "UI/UX Design",
       description: "User-centered design to deliver intuitive and engaging experiences.",
+      features: ["User Research", "Prototyping", "Design Systems"],
+      color: "from-pink-500 to-rose-600",
       icon: (
         <svg
-          className="h-10 w-10 text-indigo-600 mb-4"
+          className="h-10 w-10 text-indigo-600 mb-4 transition-transform duration-300 group-hover:scale-110"
           fill="none"
           stroke="currentColor"
           strokeWidth={2}
@@ -39,7 +49,7 @@ export default function Services() {
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
-            d="M14.752 11.168l-3.197-2.132A4 4 0 0012 3.8v16.4a4 4 0 001.555-7.632l3.197-2.132z"
+            d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z"
           />
         </svg>
       ),
@@ -47,9 +57,11 @@ export default function Services() {
     {
       title: "SEO Optimization",
       description: "Improve your visibility and drive more traffic to your site.",
+      features: ["Keyword Research", "Technical SEO", "Content Strategy"],
+      color: "from-green-500 to-teal-600",
       icon: (
         <svg
-          className="h-10 w-10 text-indigo-600 mb-4"
+          className="h-10 w-10 text-indigo-600 mb-4 transition-transform duration-300 group-hover:scale-110"
           fill="none"
           stroke="currentColor"
           strokeWidth={2}
@@ -58,7 +70,7 @@ export default function Services() {
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
-            d="M3 10h4l3 8 4-16 3 8h4"
+            d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
           />
         </svg>
       ),
@@ -66,9 +78,11 @@ export default function Services() {
     {
       title: "E-commerce Solutions",
       description: "Launch your online store with scalable e-commerce platforms.",
+      features: ["Payment Integration", "Inventory Management", "Analytics"],
+      color: "from-orange-500 to-red-600",
       icon: (
         <svg
-          className="h-10 w-10 text-indigo-600 mb-4"
+          className="h-10 w-10 text-indigo-600 mb-4 transition-transform duration-300 group-hover:scale-110"
           fill="none"
           stroke="currentColor"
           strokeWidth={2}
@@ -77,7 +91,7 @@ export default function Services() {
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
-            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.35 2.7A1 1 0 007 17h10a1 1 0 00.9-.55L21 9M7 13V6h13"
+            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17M17 13v4a2 2 0 01-2 2H9a2 2 0 01-2-2v-4m8 0V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.01"
           />
         </svg>
       ),
@@ -85,9 +99,11 @@ export default function Services() {
     {
       title: "Brand Strategy",
       description: "Craft a powerful brand story and identity that resonates.",
+      features: ["Brand Identity", "Market Research", "Visual Guidelines"],
+      color: "from-purple-500 to-indigo-600",
       icon: (
         <svg
-          className="h-10 w-10 text-indigo-600 mb-4"
+          className="h-10 w-10 text-indigo-600 mb-4 transition-transform duration-300 group-hover:scale-110"
           fill="none"
           stroke="currentColor"
           strokeWidth={2}
@@ -96,7 +112,7 @@ export default function Services() {
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
-            d="M12 8c1.5 0 3 .5 4 1.5S18 12 18 14s-.5 3-1.5 4S13.5 20 12 20s-3-.5-4-1.5S6 16 6 14s.5-3 1.5-4S10.5 8 12 8z"
+            d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
           />
         </svg>
       ),
@@ -104,9 +120,11 @@ export default function Services() {
     {
       title: "Consulting",
       description: "Expert advice to help you navigate your digital transformation.",
+      features: ["Strategic Planning", "Technology Assessment", "Implementation"],
+      color: "from-cyan-500 to-blue-600",
       icon: (
         <svg
-          className="h-10 w-10 text-indigo-600 mb-4"
+          className="h-10 w-10 text-indigo-600 mb-4 transition-transform duration-300 group-hover:scale-110"
           fill="none"
           stroke="currentColor"
           strokeWidth={2}
@@ -115,12 +133,49 @@ export default function Services() {
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
-            d="M13 16h-1v-4h-1m4-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z"
+            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
           />
         </svg>
       ),
     },
   ];
+
+  useEffect(() => {
+    // Trigger hero animation on mount
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 100);
+
+    // Stagger service card animations
+    services.forEach((_, index) => {
+      setTimeout(() => {
+        setVisibleServices(prev => [...prev, index]);
+      }, 600 + (index * 150));
+    });
+
+    // Mouse move effect for hero
+    const handleMouseMove = (e) => {
+      if (heroRef.current) {
+        const rect = heroRef.current.getBoundingClientRect();
+        setMousePosition({
+          x: e.clientX - rect.left,
+          y: e.clientY - rect.top,
+        });
+      }
+    };
+
+    const heroElement = heroRef.current;
+    if (heroElement) {
+      heroElement.addEventListener('mousemove', handleMouseMove);
+    }
+
+    return () => {
+      clearTimeout(timer);
+      if (heroElement) {
+        heroElement.removeEventListener('mousemove', handleMouseMove);
+      }
+    };
+  }, []);
 
   return (
     <>
@@ -135,72 +190,153 @@ export default function Services() {
       </Head>
       <Header />
       <main>
-        {/* Hero Section */}
-        <section className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-20 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-4xl sm:text-5xl font-bold mb-4"
-          >
-            Our Services
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-lg max-w-2xl mx-auto text-indigo-100"
-          >
-            We offer a suite of solutions designed to drive success and innovation in your business.
-          </motion.p>
+        {/* Enhanced Hero Section */}
+        <section 
+          ref={heroRef}
+          className="bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 text-white py-20 text-center relative overflow-hidden"
+        >
+          {/* Animated Background Elements */}
+          <div className="absolute inset-0">
+            <div className="absolute top-20 left-20 w-32 h-32 bg-white bg-opacity-10 rounded-full animate-pulse"></div>
+            <div className="absolute top-40 right-32 w-24 h-24 bg-white bg-opacity-10 rounded-full animate-bounce" style={{ animationDelay: '0.5s' }}></div>
+            <div className="absolute bottom-32 left-1/4 w-20 h-20 bg-white bg-opacity-10 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
+            <div className="absolute bottom-20 right-1/3 w-16 h-16 bg-white bg-opacity-10 rounded-full animate-bounce" style={{ animationDelay: '1.5s' }}></div>
+          </div>
+
+          {/* Mouse-following gradient */}
+          <div 
+            className="absolute inset-0 opacity-30"
+            style={{
+              background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(255,255,255,0.1), transparent 40%)`
+            }}
+          ></div>
+
+          <div className="max-w-4xl mx-auto px-4 relative z-10">
+            <h1 className={`text-4xl sm:text-5xl font-bold mb-4 transition-all duration-1000 ${
+              isVisible 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 translate-y-10'
+            }`}>
+              Our Services
+            </h1>
+            <p className={`text-lg max-w-2xl mx-auto text-indigo-100 transition-all duration-1000 delay-300 ${
+              isVisible 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 translate-y-10'
+            }`}>
+              We offer a suite of solutions designed to drive success and innovation in your business.
+            </p>
+          </div>
         </section>
 
-        {/* Services Grid */}
+        {/* Enhanced Services Grid */}
         <section className="max-w-6xl mx-auto px-4 py-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             {services.map((service, index) => (
-              <motion.div
+              <div
                 key={service.title}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white rounded-lg shadow p-6 hover:shadow-xl transition"
+                className={`group bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden transform hover:-translate-y-2 ${
+                  visibleServices.includes(index)
+                    ? 'opacity-100 translate-y-0 scale-100'
+                    : 'opacity-0 translate-y-10 scale-95'
+                }`}
+                onMouseEnter={() => setHoveredService(index)}
+                onMouseLeave={() => setHoveredService(null)}
+                style={{
+                  transitionDelay: `${index * 0.1}s`,
+                }}
               >
-                {service.icon}
-                <h3 className="text-gray-900 text-xl font-semibold mb-2">{service.title}</h3>
-                <p className="text-gray-600">{service.description}</p>
-              </motion.div>
+                {/* Gradient header */}
+                <div className={`h-2 bg-gradient-to-r ${service.color}`}></div>
+                
+                <div className="p-6 relative">
+                  {/* Hover background effect */}
+                  <div className={`absolute inset-0 bg-gradient-to-r ${service.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}></div>
+                  
+                  <div className="relative z-10">
+                    {service.icon}
+                    <h3 className="text-gray-900 text-xl font-semibold mb-2 group-hover:text-indigo-600 transition-colors duration-300">
+                      {service.title}
+                    </h3>
+                    <p className="text-gray-600 mb-4 group-hover:text-gray-700 transition-colors duration-300">
+                      {service.description}
+                    </p>
+                    
+                    {/* Feature list - appears on hover */}
+                    <div className={`space-y-2 transition-all duration-300 ${
+                      hoveredService === index 
+                        ? 'opacity-100 max-h-40 translate-y-0' 
+                        : 'opacity-0 max-h-0 translate-y-2'
+                    }`}>
+                      {service.features.map((feature, featureIndex) => (
+                        <div 
+                          key={feature}
+                          className="flex items-center text-sm text-gray-500"
+                          style={{
+                            transitionDelay: `${featureIndex * 0.1}s`
+                          }}
+                        >
+                          <svg className="w-4 h-4 text-indigo-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                          {feature}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Learn More Button */}
+                    <button className={`mt-4 text-indigo-600 text-sm font-medium flex items-center transition-all duration-300 ${
+                      hoveredService === index 
+                        ? 'opacity-100 translate-x-0' 
+                        : 'opacity-0 translate-x-2'
+                    }`}>
+                      Learn More
+                      <svg className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         </section>
 
-        {/* Call to Action */}
-        <section className="bg-indigo-600 text-white py-16 text-center">
-          <motion.h2
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-3xl font-bold mb-4"
-          >
-            Let&apos;s Build Something Great Together
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-lg mb-6"
-          >
-            Get in touch to discuss how we can help your business grow.
-          </motion.p>
-          <motion.a
-            href="/contact"
-            initial={{ scale: 0.9 }}
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.3 }}
-            className="inline-block bg-white text-indigo-600 font-semibold px-6 py-3 rounded-md hover:bg-gray-100 transition"
-          >
-            Contact Us
-          </motion.a>
+        {/* Enhanced Call to Action */}
+        <section className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-16 text-center relative overflow-hidden">
+          {/* Animated background pattern */}
+          <div className="absolute inset-0">
+            <div className="absolute top-10 left-10 w-20 h-20 border border-white border-opacity-20 rounded-full animate-spin" style={{ animationDuration: '20s' }}></div>
+            <div className="absolute bottom-10 right-10 w-16 h-16 border border-white border-opacity-20 rounded-full animate-spin" style={{ animationDuration: '15s', animationDirection: 'reverse' }}></div>
+          </div>
+
+          <div className="max-w-4xl mx-auto px-4 relative z-10">
+            <h2 className={`text-3xl font-bold mb-4 transition-all duration-1000 ${
+              isVisible 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 translate-y-10'
+            }`}>
+              Let's Build Something Great Together
+            </h2>
+            <p className={`text-lg mb-8 transition-all duration-1000 delay-200 ${
+              isVisible 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 translate-y-10'
+            }`}>
+              Get in touch to discuss how we can help your business grow.
+            </p>
+            <a
+              href="/contact"
+              className={`inline-block bg-white text-indigo-600 font-semibold px-8 py-3 rounded-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 hover:shadow-lg ${
+                isVisible 
+                  ? 'opacity-100 translate-y-0' 
+                  : 'opacity-0 translate-y-10'
+              }`}
+              style={{ transitionDelay: '400ms' }}
+            >
+              Contact Us
+            </a>
+          </div>
         </section>
       </main>
       <Footer />
